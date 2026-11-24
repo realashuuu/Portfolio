@@ -1,0 +1,85 @@
+# Ashik Khan — Full-Stack Developer & Software Engineer Portfolio
+
+> Portfolio and verified technical identity of Ashik Khan. Computer Science and Engineering undergraduate and Full-Stack Developer focused on building complete software products, backend systems, and AI-powered applications.
+
+## Personal & Academic Identity
+- Name: Ashik Khan
+- Canonical Name: Ashik Khan
+- Degree: Bachelor of Technology (B.Tech) in Computer Science and Engineering
+- Academic Institution: NSHM College of Management and Technology, Durgapur
+- University Affiliation: Maulana Abul Kalam Azad University of Technology (MAKAUT), West Bengal
+- Duration: 2023–2027 (Undergraduate)
+- Verified Academic Standing: CGPA 7.1 through Semester VI
+- Location: Durgapur, West Bengal, India
+
+## Professional Positioning
+- Role: Full-Stack Developer & Early-Career Software Engineer
+- Core Focus: Backend Engineering, REST APIs, WebSockets & Real-Time Communication, Database Architecture, and Practical Generative AI integrations.
+- Primary Objective: To design and build complete software products from user interface to distributed server architectures, databases, and deployment pipelines.
+
+## Verified Skills & Technical Stack
+- Programming Languages: C++ (Core DSA & Problem Solving), TypeScript (Primary Full-Stack), JavaScript (ES6+), Java (OOP & Core CS), Python (Scripting & Automation), C (Systems Fundamentals).
+- Frontend Development: React.js, Next.js (App Router, Server Components), HTML5, CSS3, Tailwind CSS, Bootstrap.
+- Backend Engineering: Node.js, Express.js, REST APIs, Socket.IO, tRPC, JWT Authentication, bcryptjs, Middleware, Webhooks (Meta Graph API).
+- Databases & Storage: PostgreSQL (Neon Serverless), MongoDB, Mongoose ORM, Drizzle ORM, Redis.
+- AI & Practical Integrations: OpenAI API (GPT models), Generative AI fundamentals, Structured JSON Prompt Engineering, Meeting Intelligence pipelines.
+- Tools & Cloud: Git, GitHub, VS Code, Vercel, Render, Cloudinary CDN.
+
+## Verified Projects
+
+### 1. Nexora — AI Meeting Intelligence Platform
+- Status: In Progress
+- Repository: https://github.com/realashuuu/nexora
+- Stack: Next.js 14, TypeScript, PostgreSQL (Neon), Drizzle ORM, OpenAI API, tRPC, Redis, Stream Video SDK.
+- Description: Automatically captures audio streams, generates structured transcriptions, extracts executive summaries, and synthesizes action items using OpenAI LLM pipelines with full tRPC type safety.
+
+### 2. MivChat — Real-Time Messaging Platform
+- Status: Live
+- Repository: https://github.com/realashuuu/MivChat
+- Live URL: https://miv-chat-vert.vercel.app/
+- Stack: React.js, Vite, Tailwind CSS, Node.js, Express.js, MongoDB, Mongoose, Socket.IO, JWT, bcryptjs, Cloudinary.
+- Description: High-concurrency bidirectional instant messaging featuring sub-50ms WebSocket delivery, live user presence status, Cloudinary image sharing, and seen/delivery tracking.
+
+### 3. UnQue Lead PoC — Meta Lead Ads Event-Driven Integration
+- Status: Completed Proof of Concept
+- Repository: https://github.com/realashuuu/Unque-Lead-PoC
+- Stack: Node.js, Express.js, TypeScript, MongoDB, Mongoose, Socket.IO, React Native, Meta Graph API, Meta Webhooks.
+- Description: Event-driven pipeline that listens for Meta Lead Ad webhooks, cryptographically verifies payloads, queries Meta Graph API, deduplicates in MongoDB, and streams real-time lead updates to a mobile dashboard in under 2 seconds.
+
+### 4. Nexus Gaming Showcase
+- Status: Live
+- Repository: https://github.com/realashuuu/Landing-Gaming-Page
+- Stack: HTML5, CSS3, JavaScript (ES6+), HTML5 Video, Responsive Grid.
+- Description: High-performance cinematic landing page featuring background autoplay video, glassmorphism UI, and 60fps rendering without external framework overhead.
+
+### 5. Enterprise Authentication Engine
+- Status: Completed PoC
+- Repository: https://github.com/realashuuu/Authentication
+- Stack: Node.js, Express.js, MongoDB, JWT, bcryptjs, Nodemailer (Email OTP).
+- Description: Production-grade auth microservice implementing dual-token rotation (short-lived access + rotating refresh tokens), secure HTTP-only cookies, and time-expiring email OTP verification.
+
+### 6. JPMorgan Chase Software Engineering Job Simulation
+- Status: Completed Certification
+- Repository: https://github.com/realashuuu/forage-midas
+- Provider: JPMorgan Chase & Co. via Forage (April 2025)
+- Stack: React.js, TypeScript, JPMorgan Perspective Library, Python Data Feeds.
+- Description: Structured simulation tasks involving financial data feed ingestion, price ratio calculations, and real-time streaming graph visualizations using the Perspective library.
+
+## Verified Problem Solving & Coding Achievements
+- LeetCode Solved: 100 Problems (35 Easy, 58 Medium, 7 Hard)
+- Language Breakdown: 99 Solved in C++, 1 Solved in Python
+- Award: 50 Days Badge 2026 (Awarded for daily coding consistency)
+- Topics Practiced: Arrays, Strings, Two Pointers, Binary Search, Hash Tables, Dynamic Programming, Monotonic Stack, Divide & Conquer
+- LeetCode Profile: https://leetcode.com/u/ashikkhan03/
+
+## Verified Certifications
+1. JPMorgan Chase & Co. — Software Engineering Job Simulation (Forage), April 2025
+2. Foundations of Web Development: CSS, Bootstrap, JS, React (Udemy), April 2025
+
+## Official Links & Contact
+- Email: ashikcodex@gmail.com
+- LinkedIn: https://www.linkedin.com/in/ashik-khan-489856299/
+- GitHub: https://github.com/realashuuu
+- LeetCode: https://leetcode.com/u/ashikkhan03/
+- Instagram: https://www.instagram.com/realashuuu/
+- Canonical Portfolio URL: https://ashik-khan.dev/
