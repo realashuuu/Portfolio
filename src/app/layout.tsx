@@ -4,7 +4,7 @@ import "./globals.css";
 import LenisProvider from "../components/LenisProvider";
 import ScrollProgress from "../components/ScrollProgress";
 import CustomCursor from "../components/CustomCursor";
-import CanvasBackground from "../components/CanvasBackground";
+import CardRevealObserver from "../components/CardRevealObserver";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
 
@@ -187,11 +187,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="min-h-screen bg-white text-ink font-sans antialiased relative overflow-x-hidden">
+      <body className="min-h-screen bg-white text-ink font-sans antialiased relative overflow-x-clip">
         <LenisProvider>
           <ScrollProgress />
           <CustomCursor />
-          <CanvasBackground />
+          <CardRevealObserver />
           <Navigation />
           <main id="main-content" className="relative z-10">
             {children}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 
 interface NavItem {
@@ -11,16 +11,15 @@ interface NavItem {
 const navItems: NavItem[] = [
   { name: "About", href: "#about" },
   { name: "Skills", href: "#skills" },
-  { name: "Experience", href: "#experience" },
+  { name: "Education", href: "#education" },
   { name: "Projects", href: "#projects" },
-  { name: "LeetCode", href: "#problem-solving" },
-  { name: "Contact", href: "#contact" },
 ];
 
 export default function Navigation() {
-  const [scrolled, setScrolled] = useState(false);
+  const [pastHero, setPastHero] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const contactBtnRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
     let frame = 0;
@@ -28,9 +27,12 @@ export default function Navigation() {
       if (frame) return;
       frame = window.requestAnimationFrame(() => {
         frame = 0;
-        setScrolled(window.scrollY > 20);
-        const sections = navItems.map((item) => item.href.substring(1));
-        const scrollPos = window.scrollY + 180;
+        const heroEl = document.getElementById("hero");
+        const threshold = heroEl ? Math.max(240, heroEl.offsetHeight - 160) : -1;
+        setPastHero(window.scrollY > threshold);
+
+        const sections = [...navItems.map((item) => item.href.substring(1)), "contact"];
+        const scrollPos = window.scrollY + 200;
         let nextSection = "";
         for (let i = sections.length - 1; i >= 0; i--) {
           const sec = document.getElementById(sections[i]);
@@ -39,7 +41,7 @@ export default function Navigation() {
             break;
           }
         }
-        setActiveSection((current) => current === nextSection ? current : nextSection);
+        setActiveSection((current) => (current === nextSection ? current : nextSection));
       });
     };
 
@@ -48,6 +50,32 @@ export default function Navigation() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       if (frame) window.cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  // Magnetic hover pull on Contact CTA button
+  useEffect(() => {
+    const btn = contactBtnRef.current;
+    if (!btn) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    if (reduceMotion || !finePointer) return;
+
+    const onMove = (e: MouseEvent) => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width / 2) * 0.3;
+      const y = (e.clientY - r.top - r.height / 2) * 0.3;
+      btn.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    };
+    const onLeave = () => {
+      btn.style.transform = "";
+    };
+
+    btn.addEventListener("mousemove", onMove, { passive: true });
+    btn.addEventListener("mouseleave", onLeave);
+    return () => {
+      btn.removeEventListener("mousemove", onMove);
+      btn.removeEventListener("mouseleave", onLeave);
     };
   }, []);
 
@@ -72,66 +100,90 @@ export default function Navigation() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 h-16 flex items-center px-6 md:px-12 ${
-        scrolled
-          ? "bg-white/90 backdrop-blur-xl border-b border-border shadow-sm"
-          : "bg-white/80 backdrop-blur-md border-b border-border/80"
+      className={`fixed z-[500] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
+        pastHero
+          ? "top-0 left-0 right-0 h-16 px-6 md:px-12 bg-white/80 backdrop-blur-2xl border-b border-border/80 shadow-[0_8px_30px_rgba(9,9,15,0.05)] flex items-center"
+          : "top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-auto h-12 px-5 md:pl-6 md:pr-2.5 rounded-full bg-[#050811]/88 backdrop-blur-2xl border border-white/15 shadow-[0_14px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] flex items-center justify-between md:justify-center"
       }`}
     >
       <nav
         aria-label="Primary Navigation"
-        className="inner flex items-center justify-between"
+        className={
+          pastHero
+            ? "w-full flex items-center justify-between"
+            : "flex items-center justify-between md:justify-center w-full gap-6"
+        }
       >
-        {/* Minimal status indicator - STRICTLY NO LOGO */}
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-emerald opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-emerald"></span>
-          </span>
-          <span className="text-[0.72rem] font-mono tracking-wider font-semibold text-brand-violet uppercase">
-            Full-Stack &amp; Systems
-          </span>
-        </div>
+        {/* Left slot: Hidden on Hero candle pill; visible as blinking purple dot + Ashik Khan when scrolled */}
+        {pastHero && (
+          <a
+            href="#hero"
+            aria-label="Scroll to top"
+            className="nav-logo group focus:outline-none animate-[yin_0.35s_ease_both]"
+          >
+            <span className="logo-dot" aria-hidden="true" />
+            <span className="text-ink">Ashik Khan</span>
+          </a>
+        )}
 
-        {/* Desktop Navigation Links */}
-        <div className="hidden md:flex items-center space-x-1 border border-border/70 rounded-full bg-white/90 px-3 py-1 shadow-sm">
+        {/* Mobile Brand Label on Hero Pill */}
+        {!pastHero && (
+          <span className="md:hidden text-xs font-mono tracking-wider uppercase text-slate-300">
+            Menu
+          </span>
+        )}
+
+        {/* Desktop Links + Contact CTA */}
+        <div
+          className={`hidden md:flex items-center ${
+            pastHero ? "gap-9" : "gap-7"
+          }`}
+        >
           {navItems.map((item) => {
             const isActive = activeSection === item.href.substring(1);
             return (
               <a
                 key={item.name}
                 href={item.href}
-                className={`relative px-3.5 py-1 text-[0.78rem] font-sans font-medium tracking-wide rounded-full transition-all duration-200 ${
-                  isActive
-                    ? "text-brand-violet bg-brand-violet/10 font-semibold"
-                    : "text-ink-2 hover:text-ink hover:bg-surface"
+                className={`nav-link inline-flex items-center ${isActive ? "active" : ""} ${
+                  pastHero
+                    ? isActive
+                      ? "text-brand-violet"
+                      : "text-ink-2 hover:text-brand-violet"
+                    : isActive
+                    ? "text-white"
+                    : "text-slate-300 hover:text-white"
                 }`}
               >
                 {item.name}
               </a>
             );
           })}
-        </div>
 
-        {/* Right CTA Button */}
-        <div className="hidden md:flex items-center">
           <a
+            ref={contactBtnRef}
             href="#contact"
-            className="inline-flex items-center gap-1.5 px-5 py-2 rounded-full text-xs font-sans font-bold text-white bg-ink hover:bg-brand-violet transition-all duration-300 shadow-sm hover:shadow-brand-violet/20"
+            className={`nav-cta group inline-flex items-center gap-1.5 ${
+              pastHero
+                ? "bg-ink text-white hover:bg-brand-violet hover:shadow-[0_8px_24px_rgba(91,62,255,0.3)]"
+                : "!py-1.5 !px-4 bg-white text-ink hover:bg-brand-violet hover:text-white hover:shadow-[0_8px_24px_rgba(91,62,255,0.45)]"
+            }`}
           >
-            <span>Get in touch</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <span>Contact</span>
+            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </a>
         </div>
 
-        {/* Mobile Hamburger Button */}
+        {/* Mobile Hamburger */}
         <div className="flex md:hidden">
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
             aria-label="Toggle Navigation Menu"
-            className="p-2 text-ink-2 hover:text-ink focus:outline-none"
+            className={`p-1.5 transition-colors focus:outline-none ${
+              pastHero ? "text-ink-2 hover:text-ink" : "text-slate-200 hover:text-white"
+            }`}
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -140,7 +192,11 @@ export default function Navigation() {
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 top-16 bg-white/98 backdrop-blur-2xl z-50 md:hidden flex flex-col px-8 py-10 justify-between border-t border-border">
+        <div
+          className={`fixed inset-x-0 bottom-0 bg-white/98 backdrop-blur-2xl z-50 md:hidden flex flex-col px-8 py-10 justify-between border-t border-border ${
+            pastHero ? "top-16" : "top-20 rounded-t-3xl"
+          }`}
+        >
           <div className="flex flex-col space-y-5">
             <span className="text-xs font-mono uppercase text-muted tracking-widest">
               Navigation
@@ -162,9 +218,10 @@ export default function Navigation() {
             <a
               href="#contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 text-center text-sm font-sans font-bold text-white bg-ink hover:bg-brand-violet rounded-xl transition-colors"
+              className="w-full py-3 text-center text-sm font-sans font-bold text-white bg-ink hover:bg-brand-violet rounded-xl transition-colors inline-flex items-center justify-center gap-1.5"
             >
-              Get in touch
+              <span>Contact</span>
+              <ArrowUpRight className="w-4 h-4" />
             </a>
             <span className="text-center text-xs font-mono text-muted">
               ashikcodex@gmail.com

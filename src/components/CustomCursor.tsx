@@ -70,6 +70,7 @@ export default function CustomCursor() {
     let ringY = 0;
     let visible = false;
     let rafId = 0;
+    let lastTime = performance.now();
 
     const show = () => {
       if (visible) return;
@@ -105,8 +106,10 @@ export default function CustomCursor() {
       ring.style.opacity = "0";
     };
 
-    const loop = () => {
-      const ease = reduceMotion ? 1 : 0.18;
+    const loop = (now: number) => {
+      const dt = Math.min(now - lastTime, 64) / 1000;
+      lastTime = now;
+      const ease = reduceMotion ? 1 : 1 - Math.pow(1 - 0.38, dt * 60);
       ringX += (mouseX - ringX) * ease;
       ringY += (mouseY - ringY) * ease;
       ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0) translate(-50%, -50%)`;

@@ -1,149 +1,91 @@
-import { GraduationCap, Award, Compass, Layers, CheckCircle2, Code2, ShieldCheck } from "lucide-react";
-
 export default function About() {
+  const keyStrengths = [
+    "End-to-end systems thinking and full-stack execution",
+    "Strong analytical and algorithmic problem-solving in C++",
+    "Backend architecture, clean APIs, and data modeling",
+    "Practical AI integration and asynchronous workflows",
+    "Structured, maintainable code with attention to detail",
+    "Fast, hands-on learner driven by curiosity for scalable systems",
+  ];
+
   return (
     <section id="about" aria-label="About Ashik Khan" className="py-28 px-6 md:px-12 bg-surface">
       <div className="inner">
         {/* Section Header */}
         <div className="mb-14">
-          <div className="eyebrow">About</div>
+          <div className="eyebrow">ABOUT</div>
           <h2 className="st">
-            The person behind<br />
-            the <span className="gr">engineering mindset</span>
+            Building software that<br />
+            <span className="gr">holds up in practice</span>
           </h2>
           <p className="stxt">
-            Computer Science and Engineering undergraduate building complete products, understanding
-            system tradeoffs, and solving real-world software challenges.
+            From clean interfaces and APIs to asynchronous workflows, databases, and applied AI.
           </p>
         </div>
 
-        {/* 2-Column Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-          {/* Left Column: Authentic Story Narrative */}
-          <div className="lg:col-span-7 space-y-5 text-[1.02rem] text-ink-2 leading-[1.85] font-sans">
+        {/* 2-Column Grid vertically centered to middle of paragraph */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          {/* Left Column: Narrative */}
+          <div className="lg:col-span-6 space-y-5 text-[1rem] text-ink-2 leading-[1.85] font-sans">
             <p>
-              I am <strong className="text-ink font-semibold">Ashik Khan</strong>, a Computer Science &amp; Engineering
-              undergraduate at{" "}
+              I am <strong className="text-ink font-semibold">Ashik Khan</strong>, a Computer
+              Science &amp; Engineering undergraduate at{" "}
               <strong className="text-ink font-semibold">
                 NSHM College of Management and Technology, Durgapur
               </strong>
-              , affiliated with MAKAUT, West Bengal (2023–2027).
+              , affiliated with MAKAUT, West Bengal (2023–2027), driven by a curiosity to understand
+              how software works beneath the surface and build practical products from the ground up.
             </p>
 
             <p>
-              I am driven by a passion to understand how software works in its entirety. Rather than viewing
-              web development as disconnected visual blocks, I explore the complete lifecycle: responsive frontend
-              experiences, robust RESTful APIs, duplex WebSocket streaming, relational database schemas, and the
-              practical integration of artificial intelligence into daily workflows.
+              Rather than treating web development as disconnected visual blocks or surface-level
+              demos, I explore how the full stack fits together—from responsive interfaces and
+              structured APIs to real-time interactions, data layers, and practical AI integrations.
+              Alongside full-stack building, I sharpen my problem-solving through consistent DSA
+              practice in C++ on LeetCode while exploring Python, backend architecture, and
+              cloud-ready workflows.
             </p>
 
             <p>
-              My engineering discipline is rooted in algorithmic problem solving in{" "}
-              <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded-full bg-white border border-border text-brand-violet">
-                C++
-              </span>
-              , where I have solved over 100 problems on LeetCode across arrays, binary search, two pointers, and dynamic
-              programming. That analytical foundation guides every architectural decision I make in full-stack TypeScript,
-              Node.js, and PostgreSQL.
+              What matters most to me is writing clean, dependable code and seeing how every layer
+              holds up under real constraints. If you care about thoughtful engineering, DSA, backend
+              systems, applied AI, or building hands-on products together,{" "}
+              <a
+                href="#contact"
+                className="text-brand-violet font-semibold hover:underline underline-offset-4"
+              >
+                let&apos;s connect
+              </a>
+              .
             </p>
-
-            <p>
-              Whether developing an AI meeting transcription and intelligence platform (<strong>Nexora</strong>),
-              engineering low-latency messaging backends (<strong>MivChat</strong>), or building event-driven Meta webhook
-              pipelines (<strong>UnQue Lead PoC</strong>), I aim to turn ideas into tangible, production-ready software products.
-            </p>
-
-            {/* Checklist */}
-            <div className="pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 border-t border-border/70">
-              <div className="flex items-center gap-2 text-xs font-sans font-medium text-ink">
-                <CheckCircle2 className="w-4 h-4 text-brand-violet flex-shrink-0" />
-                <span>Full-Stack Architecture &amp; UI</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs font-sans font-medium text-ink">
-                <CheckCircle2 className="w-4 h-4 text-brand-violet flex-shrink-0" />
-                <span>REST APIs &amp; WebSockets (Socket.IO)</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs font-sans font-medium text-ink">
-                <CheckCircle2 className="w-4 h-4 text-brand-violet flex-shrink-0" />
-                <span>PostgreSQL, Drizzle ORM &amp; MongoDB</span>
-              </div>
-              <div className="flex items-center gap-2 text-xs font-sans font-medium text-ink">
-                <CheckCircle2 className="w-4 h-4 text-brand-violet flex-shrink-0" />
-                <span>Practical OpenAI &amp; LLM Integrations</span>
-              </div>
-            </div>
           </div>
 
-          {/* Right Column: Credential Cards matching Surya's cert-card style */}
-          <div className="lg:col-span-5 flex flex-col gap-3">
-            <span className="text-[0.68rem] font-mono uppercase tracking-[0.18em] text-muted font-bold block mb-1">
-              CREDENTIALS &amp; ACADEMICS
-            </span>
+          {/* Right Column: Compact centered Key Strengths card */}
+          <div className="lg:col-span-6 flex justify-center">
+            <div
+              data-reveal-card
+              className="reveal-card card-glow w-fit max-w-full bg-white rounded-[22px] p-5 sm:p-6 shadow-sm active:scale-[0.99]"
+            >
+              <div className="pb-2.5 mb-3 border-b border-border">
+                <h3 className="text-base font-display font-extrabold text-ink tracking-tight">
+                  Key Strengths
+                </h3>
+              </div>
 
-            {/* Degree Card */}
-            <div className="bg-white border border-border rounded-2xl p-4 flex items-center gap-3.5 shadow-sm hover:border-brand-violet hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-xl bg-brand-violet/10 flex items-center justify-center text-brand-violet flex-shrink-0">
-                <GraduationCap className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-[0.88rem] font-bold text-ink leading-tight">
-                  B.Tech in Computer Science &amp; Engineering
-                </div>
-                <div className="text-[0.68rem] font-mono uppercase font-semibold text-muted mt-1">
-                  NSHM Durgapur · MAKAUT · 2023–2027 (CGPA 7.1)
-                </div>
-              </div>
-            </div>
-
-            {/* Simulation Card */}
-            <div className="bg-white border border-border rounded-2xl p-4 flex items-center gap-3.5 shadow-sm hover:border-brand-violet hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-xl bg-brand-cyan/10 flex items-center justify-center text-brand-cyan flex-shrink-0">
-                <Award className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-[0.88rem] font-bold text-ink leading-tight">
-                  Software Engineering Job Simulation
-                </div>
-                <div className="text-[0.68rem] font-mono uppercase font-semibold text-muted mt-1">
-                  JPMorgan Chase &amp; Co. via Forage (April 2025)
-                </div>
-              </div>
-            </div>
-
-            {/* Certification Card */}
-            <div className="bg-white border border-border rounded-2xl p-4 flex items-center gap-3.5 shadow-sm hover:border-brand-violet hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-xl bg-brand-emerald/10 flex items-center justify-center text-brand-emerald flex-shrink-0">
-                <Layers className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-[0.88rem] font-bold text-ink leading-tight">
-                  Foundations of Web Development
-                </div>
-                <div className="text-[0.68rem] font-mono uppercase font-semibold text-muted mt-1">
-                  CSS, Bootstrap, JavaScript &amp; React (Udemy, April 2025)
-                </div>
-              </div>
-            </div>
-
-            {/* LeetCode Consistency Card */}
-            <div className="bg-white border border-border rounded-2xl p-4 flex items-center gap-3.5 shadow-sm hover:border-brand-violet hover:shadow-md transition-all">
-              <div className="w-10 h-10 rounded-xl bg-brand-amber/10 flex items-center justify-center text-brand-amber flex-shrink-0">
-                <Code2 className="w-5 h-5" />
-              </div>
-              <div>
-                <div className="text-[0.88rem] font-bold text-ink leading-tight">
-                  50 Days Badge 2026 Recognition
-                </div>
-                <div className="text-[0.68rem] font-mono uppercase font-semibold text-muted mt-1">
-                  LeetCode Verified Daily Consistency Award
-                </div>
-              </div>
-            </div>
-
-            {/* Career Direction Pill */}
-            <div className="mt-2 p-3.5 rounded-xl border border-dashed border-border bg-white/70 flex items-center gap-3 text-xs font-mono text-ink-2">
-              <Compass className="w-4 h-4 text-brand-violet flex-shrink-0" />
-              <span>Targeting: Entry-Level Software Engineer / Full-Stack Roles</span>
+              <ul className="space-y-2.5">
+                {keyStrengths.map((strength) => (
+                  <li
+                    key={strength}
+                    className="flex items-center gap-2.5 text-[0.78rem] sm:text-[0.82rem] text-ink-2 leading-snug font-sans xl:whitespace-nowrap"
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="w-1.5 h-1.5 rounded-full border-[1.5px] border-brand-violet flex-shrink-0"
+                    />
+                    <span>{strength}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>

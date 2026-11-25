@@ -7,16 +7,14 @@ import {
   Check,
   Github,
   Linkedin,
-  Code2,
-  Instagram,
-  ArrowUpRight,
   MapPin,
-  Clock,
-  Sparkles,
+  ArrowUpRight,
 } from "lucide-react";
+import EarthGlobe from "./EarthGlobe";
 
 export default function Contact() {
   const [copied, setCopied] = useState(false);
+  const [focusSignal, setFocusSignal] = useState(0);
   const copiedTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -25,7 +23,9 @@ export default function Contact() {
     };
   }, []);
 
-  const handleCopy = async () => {
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     try {
       await navigator.clipboard.writeText("ashikcodex@gmail.com");
     } catch {
@@ -44,214 +44,131 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" aria-label="Contact Ashik Khan" className="py-28 px-6 md:px-12 bg-ink text-white relative">
+    <section
+      id="contact"
+      aria-label="Contact Ashik Khan"
+      className="py-24 px-6 md:px-12 bg-ink text-white relative"
+    >
       <div className="inner">
         {/* Section Header */}
-        <div className="mb-14">
+        <div className="mb-12">
           <div className="eyebrow !text-brand-cyan">Contact</div>
           <h2 className="st !text-white">
             Let&apos;s build something<br />
             <span className="gr">remarkable</span>
           </h2>
-          <p className="stxt !text-muted">
-            Open to software engineering roles, internships, product engineering, and collaborative systems development.
+          <p className="stxt !text-muted !mb-0">
+            Open to internships, entry-level analyst &amp; engineering roles, and building practical
+            full-stack and AI products together.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Contact Cards matching .ct-card */}
-          <div className="lg:col-span-7 space-y-4">
-            {/* Primary Email Card */}
-            <div className="bg-white/[0.05] border border-white/[0.08] rounded-[20px] p-6 sm:p-7 space-y-3">
-              <span className="text-[0.65rem] font-mono uppercase tracking-[0.2em] text-muted font-bold block">
-                PRIMARY EMAIL
-              </span>
-
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-xl bg-brand-violet/20 border border-brand-violet/30 flex items-center justify-center text-brand-violet">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-base sm:text-lg font-mono font-bold text-white select-all">
-                      ashikcodex@gmail.com
-                    </span>
-                    <span className="text-xs font-mono text-muted block">Direct developer inbox</span>
-                  </div>
+        {/* 2-Column Layout: Clean Contact Stack on Left + Standalone 3D Earth Globe on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          {/* Left Column: Email, LinkedIn, GitHub, Location */}
+          <div className="lg:col-span-5 flex flex-col gap-3.5">
+            {/* Email Card */}
+            <a
+              href="mailto:ashikcodex@gmail.com?subject=Opportunity%20%2F%20Inquiry%20-%20Ashik%20Khan"
+              data-reveal-card
+              style={{ "--reveal-delay": "0ms" } as React.CSSProperties}
+              className="reveal-card ct-card group active:scale-[0.99]"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="ct-ico text-white">
+                  <Mail className="w-5 h-5" />
                 </div>
-
-                <div className="flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={handleCopy}
-                    aria-label="Copy email address"
-                    className="px-4 py-2 rounded-full text-xs font-mono font-bold text-white bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.12] transition-all flex items-center gap-1.5"
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="w-3.5 h-3.5 text-brand-emerald" />
-                        <span className="text-brand-emerald">Copied!</span>
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-3.5 h-3.5 text-muted" />
-                        <span>Copy</span>
-                      </>
-                    )}
-                  </button>
-
-                  <a
-                    href="mailto:ashikcodex@gmail.com?subject=Software%20Engineering%20Inquiry%20-%20Ashik%20Khan"
-                    className="px-4 py-2 rounded-full text-xs font-sans font-bold text-white bg-brand-violet hover:bg-brand-violet-light transition-all flex items-center gap-1.5 shadow-md shadow-brand-violet/30"
-                  >
-                    <span>Send Email</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
+                <div className="min-w-0">
+                  <div className="ct-lbl">EMAIL</div>
+                  <div className="ct-val truncate">ashikcodex@gmail.com</div>
                 </div>
               </div>
-            </div>
 
-            {/* Social Grid matching .ct-card */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* LinkedIn */}
-              <a
-                href="https://www.linkedin.com/in/ashik-khan-489856299/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/[0.05] border border-white/[0.08] hover:border-brand-violet/50 hover:bg-white/[0.08] rounded-[20px] p-5 flex items-center justify-between group transition-all"
+              <button
+                type="button"
+                onClick={handleCopy}
+                aria-label="Copy email address"
+                className="flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-mono font-bold text-slate-200 bg-white/[0.08] hover:bg-white/[0.18] border border-white/[0.12] transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-violet/20 text-brand-violet flex items-center justify-center">
-                    <Linkedin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[0.62rem] font-mono text-muted uppercase font-bold block">
-                      LinkedIn
-                    </span>
-                    <span className="text-sm font-display font-bold text-white group-hover:text-brand-violet transition-colors">
-                      Ashik Khan
-                    </span>
-                  </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-white transition-all" />
-              </a>
+                {copied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-brand-emerald" />
+                    <span className="text-brand-emerald">Copied</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5 text-muted" />
+                    <span>Copy</span>
+                  </>
+                )}
+              </button>
+            </a>
 
-              {/* GitHub */}
-              <a
-                href="https://github.com/realashuuu"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/[0.05] border border-white/[0.08] hover:border-brand-violet/50 hover:bg-white/[0.08] rounded-[20px] p-5 flex items-center justify-between group transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-white/[0.08] text-white flex items-center justify-center">
-                    <Github className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[0.62rem] font-mono text-muted uppercase font-bold block">
-                      GitHub
-                    </span>
-                    <span className="text-sm font-display font-bold text-white group-hover:text-brand-violet transition-colors">
-                      realashuuu
-                    </span>
-                  </div>
+            {/* LinkedIn Card */}
+            <a
+              href="https://www.linkedin.com/in/ashik-khan-489856299/"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal-card
+              style={{ "--reveal-delay": "60ms" } as React.CSSProperties}
+              className="reveal-card ct-card group active:scale-[0.99]"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="ct-ico text-white">
+                  <Linkedin className="w-5 h-5" />
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-white transition-all" />
-              </a>
+                <div className="min-w-0">
+                  <div className="ct-lbl">LINKEDIN</div>
+                  <div className="ct-val truncate">linkedin.com/in/ashik-khan-489856299</div>
+                </div>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-white flex-shrink-0 transition-colors" />
+            </a>
 
-              {/* LeetCode */}
-              <a
-                href="https://leetcode.com/u/ashikkhan03/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/[0.05] border border-white/[0.08] hover:border-brand-amber/50 hover:bg-white/[0.08] rounded-[20px] p-5 flex items-center justify-between group transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-amber/20 text-brand-amber flex items-center justify-center">
-                    <Code2 className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[0.62rem] font-mono text-muted uppercase font-bold block">
-                      LeetCode
-                    </span>
-                    <span className="text-sm font-display font-bold text-white group-hover:text-brand-amber transition-colors">
-                      100 Solved · 50 Days
-                    </span>
-                  </div>
+            {/* GitHub Card */}
+            <a
+              href="https://github.com/realashuuu"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-reveal-card
+              style={{ "--reveal-delay": "120ms" } as React.CSSProperties}
+              className="reveal-card ct-card group active:scale-[0.99]"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="ct-ico text-white">
+                  <Github className="w-5 h-5" />
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-white transition-all" />
-              </a>
+                <div className="min-w-0">
+                  <div className="ct-lbl">GITHUB</div>
+                  <div className="ct-val truncate">github.com/realashuuu</div>
+                </div>
+              </div>
+              <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-white flex-shrink-0 transition-colors" />
+            </a>
 
-              {/* Instagram */}
-              <a
-                href="https://www.instagram.com/realashuuu/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-white/[0.05] border border-white/[0.08] hover:border-white/30 hover:bg-white/[0.08] rounded-[20px] p-5 flex items-center justify-between group transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-brand-rose/20 text-brand-rose flex items-center justify-center">
-                    <Instagram className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[0.62rem] font-mono text-muted uppercase font-bold block">
-                      Instagram
-                    </span>
-                    <span className="text-sm font-display font-bold text-white group-hover:text-brand-rose transition-colors">
-                      @realashuuu
-                    </span>
-                  </div>
+            {/* Location Card (centers globe on India) */}
+            <button
+              type="button"
+              onClick={() => setFocusSignal((n) => n + 1)}
+              data-reveal-card
+              style={{ "--reveal-delay": "180ms" } as React.CSSProperties}
+              className="reveal-card ct-card group text-left w-full active:scale-[0.99]"
+            >
+              <div className="flex items-center gap-4 min-w-0">
+                <div className="ct-ico text-white">
+                  <MapPin className="w-5 h-5" />
                 </div>
-                <ArrowUpRight className="w-4 h-4 text-muted group-hover:text-white transition-all" />
-              </a>
-            </div>
+                <div className="min-w-0">
+                  <div className="ct-lbl">LOCATION</div>
+                  <div className="ct-val truncate">Durgapur, West Bengal, India</div>
+                </div>
+              </div>
+            </button>
           </div>
 
-          {/* Right Column: Status & Direct Summary */}
-          <div className="lg:col-span-5 bg-white/[0.05] border border-white/[0.08] rounded-[20px] p-7 space-y-5">
-            <div className="flex items-center gap-2">
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-emerald opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-emerald"></span>
-              </span>
-              <span className="text-xs font-mono uppercase tracking-widest text-brand-emerald font-bold">
-                CURRENT STATUS
-              </span>
-            </div>
-
-            <div className="space-y-3.5 text-xs font-mono">
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                <MapPin className="w-4 h-4 text-brand-violet flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-muted block uppercase text-[0.62rem]">Location</span>
-                  <span className="text-white font-bold">Durgapur, West Bengal, India</span>
-                  <span className="text-muted text-[11px] block">(IST · UTC+5:30)</span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                <Clock className="w-4 h-4 text-brand-amber flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-muted block uppercase text-[0.62rem]">Academic Timeline</span>
-                  <span className="text-white font-bold">B.Tech CSE (2023–2027)</span>
-                  <span className="text-muted text-[11px] block">NSHM · MAKAUT (CGPA 7.1)</span>
-                </div>
-              </div>
-
-              <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/[0.03] border border-white/[0.06]">
-                <Sparkles className="w-4 h-4 text-brand-emerald flex-shrink-0 mt-0.5" />
-                <div>
-                  <span className="text-muted block uppercase text-[0.62rem]">Opportunities</span>
-                  <span className="text-white font-bold">Full-Stack / Backend Engineering</span>
-                  <span className="text-muted text-[11px] block">Internships &amp; Full-Time Roles</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-xs text-muted font-sans leading-relaxed pt-1">
-              Available for immediate discussions regarding software engineering roles, full-stack application development,
-              and innovative product architectures.
-            </div>
+          {/* Right Column: Standalone Interactive 3D Rotating Earth Globe shifted slightly right */}
+          <div className="lg:col-span-7 flex items-center justify-center lg:justify-end lg:pl-8 lg:translate-x-6">
+            <EarthGlobe focusSignal={focusSignal} />
           </div>
         </div>
       </div>

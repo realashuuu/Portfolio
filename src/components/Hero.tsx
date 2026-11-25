@@ -1,41 +1,117 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
-import {
-  Github,
-  Linkedin,
-  Code2,
-  Instagram,
-  ArrowRight,
-  Copy,
-  Check,
-} from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
+import HeroShaderBg from "./HeroShaderBg";
 
-const roles = [
+const PHRASES = [
   "Full-Stack Developer",
-  "Backend & Systems Explorer",
+  "Backend & Systems Engineer",
   "AI Product Builder",
-  "Problem Solver (100 LeetCode)",
+  "DSA & Problem Solver",
 ];
 
 export default function Hero() {
-  const [roleIndex, setRoleIndex] = useState(0);
-  const [copied, setCopied] = useState(false);
-  const copiedTimerRef = useRef<number | null>(null);
+  const typeWordRef = useRef<HTMLSpanElement | null>(null);
   const portraitRef = useRef<HTMLDivElement | null>(null);
+  const projectsBtnRef = useRef<HTMLAnchorElement | null>(null);
+  const resumeBtnRef = useRef<HTMLAnchorElement | null>(null);
 
+  // Smooth character-by-character typewriter effect
   useEffect(() => {
-    const interval = setInterval(() => {
-      setRoleIndex((prev) => (prev + 1) % roles.length);
-    }, 3200);
+    const el = typeWordRef.current;
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduceMotion) {
+      el.textContent = PHRASES[0];
+      return;
+    }
+
+    let pi = 0;
+    let ci = 0;
+    let deleting = false;
+    let pauseFrames = 0;
+    let timerId = 0;
+    const PAUSE = 55;
+    const TYPE_MS = 55;
+    const DEL_MS = 28;
+
+    const tick = () => {
+      const phrase = PHRASES[pi];
+      if (pauseFrames > 0) {
+        pauseFrames--;
+        timerId = window.setTimeout(tick, TYPE_MS);
+        return;
+      }
+
+      if (!deleting) {
+        el.textContent = phrase.slice(0, ci + 1);
+        ci++;
+        if (ci === phrase.length) {
+          deleting = true;
+          pauseFrames = PAUSE;
+          timerId = window.setTimeout(tick, TYPE_MS);
+          return;
+        }
+      } else {
+        el.textContent = phrase.slice(0, ci - 1);
+        ci--;
+        if (ci === 0) {
+          deleting = false;
+          pi = (pi + 1) % PHRASES.length;
+          pauseFrames = 8;
+        }
+      }
+
+      timerId = window.setTimeout(tick, deleting ? DEL_MS : TYPE_MS);
+    };
+
+    el.textContent = "";
+    timerId = window.setTimeout(tick, 900);
+
     return () => {
-      clearInterval(interval);
-      if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current);
+      window.clearTimeout(timerId);
     };
   }, []);
 
-  // Floating + magnetic portrait
+  // Magnetic hover pull on primary hero CTAs
+  useEffect(() => {
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    if (reduceMotion || !finePointer) return;
+
+    const buttons = [projectsBtnRef.current, resumeBtnRef.current].filter(
+      Boolean
+    ) as HTMLAnchorElement[];
+
+    const cleanups = buttons.map((btn) => {
+      const onMove = (e: MouseEvent) => {
+        const r = btn.getBoundingClientRect();
+        const x = (e.clientX - r.left - r.width / 2) * 0.3;
+        const y = (e.clientY - r.top - r.height / 2) * 0.3;
+        btn.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+      };
+      const onLeave = () => {
+        btn.style.transform = "";
+      };
+
+      btn.addEventListener("mousemove", onMove, { passive: true });
+      btn.addEventListener("mouseleave", onLeave);
+
+      return () => {
+        btn.removeEventListener("mousemove", onMove);
+        btn.removeEventListener("mouseleave", onLeave);
+      };
+    });
+
+    return () => {
+      cleanups.forEach((fn) => fn());
+    };
+  }, []);
+
+  // Floating and magnetic portrait interaction
   useEffect(() => {
     const el = portraitRef.current;
     if (!el) return;
@@ -101,163 +177,97 @@ export default function Hero() {
     };
   }, []);
 
-  const handleCopyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText("ashikcodex@gmail.com");
-    } catch {
-      const textarea = document.createElement("textarea");
-      textarea.value = "ashikcodex@gmail.com";
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.appendChild(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      textarea.remove();
-    }
-    setCopied(true);
-    if (copiedTimerRef.current) window.clearTimeout(copiedTimerRef.current);
-    copiedTimerRef.current = window.setTimeout(() => setCopied(false), 2400);
-  };
-
   return (
     <section
       id="hero"
       aria-label="Introduction & Overview"
-      className="relative min-h-screen flex flex-col justify-center pt-28 pb-20 overflow-hidden bg-white"
+      className="relative min-h-[106vh] flex flex-col justify-center pt-32 md:pt-36 pb-44 md:pb-48 overflow-hidden bg-[#070b14] text-white"
+      style={{
+        backgroundImage:
+          "radial-gradient(85% 65% at 62% 38%, #152238 0%, #070b14 75%)",
+      }}
     >
-      {/* Ambient background blobs matching Surya's portfolio */}
-      <div className="blob bl1" aria-hidden="true" />
-      <div className="blob bl2" aria-hidden="true" />
-      <div className="blob bl3" aria-hidden="true" />
-      <div className="dot-grid" aria-hidden="true" />
+      {/* Animated dark-blue WebGL silk gradient backdrop */}
+      <HeroShaderBg />
 
-      <div className="inner px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
-        {/* Left Column: Hero Typography & Actions */}
-        <div className="lg:col-span-7 space-y-6">
-          {/* Status Badge */}
-          <div>
-            <div className="hero-badge">
-              <div className="badge-pulse" />
-              <span>B.Tech CSE &apos;27 · Durgapur · Open for Opportunities</span>
-            </div>
+      {/* Architectural dot-grid & contrast vignette */}
+      <div className="dot-grid-dark" aria-hidden="true" />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#070b14]/30 via-transparent to-[#070b14]/70"
+      />
+
+      <div className="inner px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
+        {/* Left Column: Availability Badge, Hero Typography, Typewriter & Magnetic CTAs */}
+        <div className="lg:col-span-7">
+          {/* Compact blinking green availability pill */}
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md text-[0.58rem] sm:text-[0.62rem] font-mono font-bold uppercase tracking-[0.09em] text-sky-300 mb-3.5 shadow-[0_4px_20px_rgba(6,182,212,0.1)] animate-[yin_0.6s_cubic-bezier(0.23,1,0.32,1)_both]">
+            <span className="badge-pulse-green !w-1.5 !h-1.5" aria-hidden="true" />
+            <span>Open to internships &amp; entry-level analyst roles</span>
           </div>
 
-          {/* Headline matching reference hname */}
+          {/* Capitalized display name headline */}
           <h1 className="hname">
-            <span className="gr">Ashik</span>
+            <span className="gr-hero">ASHIK</span>
             <br />
-            Khan
+            <span className="text-[#F3F1EB]">KHAN</span>
           </h1>
 
-          {/* Role Cycler */}
-          <div className="flex items-center gap-2 font-mono text-sm sm:text-base text-ink-2 h-7">
-            <span className="text-brand-violet font-bold">❯</span>
-            <span className="font-semibold text-brand-violet">
-              {roles[roleIndex]}
+          {/* Smooth typewriter cycle below name */}
+          <div className="hero-role-cycle">
+            <span ref={typeWordRef} className="type-word-hero">
+              Full-Stack Developer
             </span>
-            <span className="inline-block w-2 h-4 bg-brand-violet animate-pulse" />
+            <span className="hero-cursor" aria-hidden="true" />
           </div>
 
-          {/* Description matching .hero-p */}
-          <p className="hero-p">
-            <strong>Ashik Khan</strong> — Computer Science &amp; Engineering undergraduate and{" "}
-            <strong>Full-Stack Developer</strong> exploring the intersection of backend architectures,
-            real-time WebSockets, database design, and practical <strong>Generative AI</strong> product integrations.
+          {/* Concise bio */}
+          <p className="hero-p-dark">
+            <strong className="text-white font-semibold">Ashik Khan</strong> — Computer Science &amp;
+            Engineering undergraduate and{" "}
+            <strong className="text-white font-semibold">Full-Stack Developer</strong> building scalable
+            web applications, backend architectures, real-time systems, and practical{" "}
+            <strong className="text-white font-semibold">AI-powered products</strong>.
           </p>
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap items-center gap-3.5 pt-2">
-            <a href="#projects" className="hbtn-p">
+          {/* Magnetic CTAs: View Projects & View Resume */}
+          <div className="flex flex-wrap items-center gap-4">
+            <a ref={projectsBtnRef} href="#projects" className="hbtn-p">
               <span>View Projects</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-4 h-4" />
             </a>
 
-            <a href="#contact" className="hbtn-s">
-              <span>Get in touch</span>
-            </a>
-
-            <button
-              type="button"
-              onClick={handleCopyEmail}
-              aria-label="Copy Email Address"
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-full border border-border text-ink-2 hover:border-ink hover:text-ink bg-white text-xs font-sans font-bold transition-all shadow-sm"
-            >
-              {copied ? (
-                <>
-                  <Check className="w-3.5 h-3.5 text-brand-emerald" />
-                  <span className="text-brand-emerald">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3.5 h-3.5 text-muted" />
-                  <span>Copy Email</span>
-                </>
-              )}
-            </button>
-          </div>
-
-          {/* Social Links */}
-          <div className="flex items-center gap-4 pt-3 text-muted">
-            <span className="text-xs font-mono uppercase tracking-wider text-muted/70 mr-1">
-              Connect:
-            </span>
             <a
-              href="https://github.com/realashuuu"
+              ref={resumeBtnRef}
+              href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Ashik Khan on GitHub"
-              className="hover:text-brand-violet transition-colors p-1"
+              className="hbtn-s"
             >
-              <Github className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/ashik-khan-489856299/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ashik Khan on LinkedIn"
-              className="hover:text-brand-violet transition-colors p-1"
-            >
-              <Linkedin className="w-4 h-4" />
-            </a>
-            <a
-              href="https://leetcode.com/u/ashikkhan03/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ashik Khan on LeetCode"
-              className="hover:text-brand-violet transition-colors p-1"
-            >
-              <Code2 className="w-4 h-4" />
-            </a>
-            <a
-              href="https://www.instagram.com/realashuuu/"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Ashik Khan on Instagram"
-              className="hover:text-brand-violet transition-colors p-1"
-            >
-              <Instagram className="w-4 h-4" />
+              <FileText className="w-4 h-4 text-sky-300" />
+              <span>View Resume</span>
             </a>
           </div>
         </div>
 
-        {/* Right Column: round floating portrait */}
+        {/* Right Column: Round floating magnetic portrait */}
         <div className="relative flex items-center justify-center lg:col-span-5">
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute h-[320px] w-[320px] rounded-full bg-[radial-gradient(circle,rgba(53,70,86,0.7)_0%,rgba(53,70,86,0)_70%)] blur-2xl sm:h-[360px] sm:w-[360px]"
+            className="pointer-events-none absolute h-[320px] w-[320px] rounded-full bg-[radial-gradient(circle,rgba(91,62,255,0.28)_0%,rgba(56,189,248,0.12)_45%,rgba(7,11,20,0)_72%)] blur-2xl sm:h-[380px] sm:w-[380px]"
           />
 
           <div
             ref={portraitRef}
-            className="relative h-64 w-64 rounded-full bg-gradient-to-br from-[#E9ECEF] via-[#354656] to-[#A6B7C8] p-[3px] shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] will-change-transform sm:h-72 sm:w-72"
+            className="relative h-64 w-64 rounded-full bg-gradient-to-br from-[#8b6fff] via-[#354656] to-[#38bdf8] p-[3px] shadow-[0_30px_90px_-15px_rgba(91,62,255,0.45)] will-change-transform sm:h-72 sm:w-72 md:h-80 md:w-80"
           >
-            <div className="relative h-full w-full overflow-hidden rounded-full bg-[#202B37]">
+            <div className="relative h-full w-full overflow-hidden rounded-full bg-[#10151C]">
               <Image
                 src="/avatar.png"
                 alt="Ashik Khan - Computer Science Undergraduate & Full-Stack Developer"
                 fill
                 priority
-                sizes="(max-width: 768px) 250px, 300px"
+                sizes="(max-width: 768px) 256px, 320px"
                 className="object-cover object-center"
               />
             </div>
@@ -265,17 +275,16 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Wave bottom separator transitioning to #about with fill #f7f7fc */}
+      {/* Wave separator transitioning cleanly into #about */}
       <div className="wave-wrap" aria-hidden="true">
         <svg
           viewBox="0 0 1440 80"
           xmlns="http://www.w3.org/2000/svg"
           preserveAspectRatio="none"
-          height="80"
-          className="w-full"
+          className="block w-full h-[54px] sm:h-[72px] md:h-[84px]"
         >
           <path
-            d="M0,30 C240,75 480,0 720,45 C960,90 1200,10 1440,40 L1440,80 L0,80Z"
+            d="M0,32 C240,78 480,2 720,44 C960,86 1200,12 1440,38 L1440,80 L0,80Z"
             fill="#f7f7fc"
           />
         </svg>

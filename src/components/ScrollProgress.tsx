@@ -1,34 +1,52 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export default function ScrollProgress() {
-  const [progress, setProgress] = useState(0);
+  const barRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const totalScroll = document.documentElement.scrollTop;
-      const windowHeight =
+    const bar = barRef.current;
+    if (!bar) return;
+
+    let rafId = 0;
+    let ticking = false;
+
+    const update = () => {
+      ticking = false;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const maxScroll =
         document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      if (windowHeight > 0) {
-        const scrollPercent = (totalScroll / windowHeight) * 100;
-        setProgress(Math.min(100, Math.max(0, scrollPercent)));
+      const ratio = maxScroll > 0 ? Math.min(1, Math.max(0, scrollTop / maxScroll)) : 0;
+      bar.style.transform = `scaleX(${ratio})`;
+    };
+
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        rafId = requestAnimationFrame(update);
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   return (
     <div
       id="prog"
+      ref={barRef}
       role="progressbar"
       aria-label="Reading progress"
-      aria-valuenow={Math.round(progress)}
       aria-valuemin={0}
       aria-valuemax={100}
-      style={{ width: `${progress}%` }}
     />
   );
 }
