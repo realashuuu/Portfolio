@@ -181,10 +181,10 @@ export default function Hero() {
     <section
       id="hero"
       aria-label="Introduction & Overview"
-      className="relative min-h-[106vh] flex flex-col justify-center pt-32 md:pt-36 pb-44 md:pb-48 overflow-hidden bg-[#070b14] text-white"
+      className="relative min-h-[106vh] flex flex-col justify-center pt-32 md:pt-36 pb-44 md:pb-48 overflow-hidden bg-[#04070e] text-white"
       style={{
         backgroundImage:
-          "radial-gradient(85% 65% at 62% 38%, #152238 0%, #070b14 75%)",
+          "radial-gradient(85% 65% at 62% 38%, #0e172a 0%, #04070e 75%)",
       }}
     >
       {/* Animated dark-blue WebGL silk gradient backdrop */}
@@ -194,7 +194,7 @@ export default function Hero() {
       <div className="dot-grid-dark" aria-hidden="true" />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#070b14]/30 via-transparent to-[#070b14]/70"
+        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#04070e]/45 via-[#04070e]/15 to-[#04070e]/80"
       />
 
       <div className="inner px-6 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center relative z-10">
@@ -203,7 +203,7 @@ export default function Hero() {
           {/* Compact blinking green availability pill */}
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-white/15 backdrop-blur-md text-[0.58rem] sm:text-[0.62rem] font-mono font-bold uppercase tracking-[0.09em] text-sky-300 mb-3.5 shadow-[0_4px_20px_rgba(6,182,212,0.1)] animate-[yin_0.6s_cubic-bezier(0.23,1,0.32,1)_both]">
             <span className="badge-pulse-green !w-1.5 !h-1.5" aria-hidden="true" />
-            <span>Open to internships &amp; entry-level analyst roles</span>
+            <span>Open to internships &amp; entry-level roles</span>
           </div>
 
           {/* Capitalized display name headline */}

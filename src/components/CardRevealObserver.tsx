@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 
-// Single shared IntersectionObserver for lightweight, 60fps GPU-composited card reveals
+// Single shared IntersectionObserver for smooth 0.7s cubic-bezier scroll reveals across mobile & desktop
 export default function CardRevealObserver() {
   useEffect(() => {
     const cards = Array.from(
@@ -27,11 +27,11 @@ export default function CardRevealObserver() {
         return;
       }
       el.classList.add("is-visible");
-      // Release reveal classes after entrance so native hover/GSAP transforms have zero contention
+      // Release reveal classes after 0.7s transition completes so hover/GSAP animations never conflict
       const t = window.setTimeout(() => {
         el.classList.remove("reveal-card", "is-visible");
         el.style.removeProperty("--reveal-delay");
-      }, 800);
+      }, 950);
       timers.push(t);
     };
 
@@ -46,14 +46,14 @@ export default function CardRevealObserver() {
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: "0px 0px -30px 0px",
+        threshold: 0.1,
+        rootMargin: "0px 0px -24px 0px",
       }
     );
 
     cards.forEach((card) => {
       const rect = card.getBoundingClientRect();
-      if (rect.top < window.innerHeight * 0.96) {
+      if (rect.top < window.innerHeight * 0.95) {
         reveal(card, true);
       } else {
         observer.observe(card);

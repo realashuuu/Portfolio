@@ -98,127 +98,153 @@ export default function Navigation() {
     };
   }, [mobileMenuOpen]);
 
+  const handleMobileNav = (href: string) => {
+    setMobileMenuOpen(false);
+    const target = document.querySelector(href);
+    if (target instanceof HTMLElement) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <header
-      className={`fixed z-[500] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-        pastHero
-          ? "top-0 left-0 right-0 h-16 px-6 md:px-12 bg-white/80 backdrop-blur-2xl border-b border-border/80 shadow-[0_8px_30px_rgba(9,9,15,0.05)] flex items-center"
-          : "top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-auto h-12 px-5 md:pl-6 md:pr-2.5 rounded-full bg-[#050811]/88 backdrop-blur-2xl border border-white/15 shadow-[0_14px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] flex items-center justify-between md:justify-center"
-      }`}
-    >
-      <nav
-        aria-label="Primary Navigation"
-        className={
+    <>
+      <header
+        className={`fixed z-[500] transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${
           pastHero
-            ? "w-full flex items-center justify-between"
-            : "flex items-center justify-between md:justify-center w-full gap-6"
-        }
+            ? "top-0 left-0 right-0 h-16 px-5 md:px-12 bg-white/85 backdrop-blur-2xl border-b border-border/80 shadow-[0_8px_30px_rgba(9,9,15,0.05)] flex items-center"
+            : "top-3.5 md:top-4 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md md:max-w-none md:w-auto h-12 px-5 md:pl-6 md:pr-2.5 rounded-full bg-[#050811]/88 backdrop-blur-2xl border border-white/15 shadow-[0_14px_40px_rgba(0,0,0,0.6),inset_0_1px_0_rgba(255,255,255,0.12)] flex items-center justify-between md:justify-center"
+        }`}
       >
-        {/* Left slot: Hidden on Hero candle pill; visible as blinking purple dot + Ashik Khan when scrolled */}
-        {pastHero && (
-          <a
-            href="#hero"
-            aria-label="Scroll to top"
-            className="nav-logo group focus:outline-none animate-[yin_0.35s_ease_both]"
-          >
-            <span className="logo-dot" aria-hidden="true" />
-            <span className="text-ink">Ashik Khan</span>
-          </a>
-        )}
-
-        {/* Mobile Brand Label on Hero Pill */}
-        {!pastHero && (
-          <span className="md:hidden text-xs font-mono tracking-wider uppercase text-slate-300">
-            Menu
-          </span>
-        )}
-
-        {/* Desktop Links + Contact CTA */}
-        <div
-          className={`hidden md:flex items-center ${
-            pastHero ? "gap-9" : "gap-7"
-          }`}
+        <nav
+          aria-label="Primary Navigation"
+          className={
+            pastHero
+              ? "w-full flex items-center justify-between"
+              : "flex items-center justify-between md:justify-center w-full gap-6"
+          }
         >
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.substring(1);
-            return (
-              <a
-                key={item.name}
-                href={item.href}
-                className={`nav-link inline-flex items-center ${isActive ? "active" : ""} ${
-                  pastHero
-                    ? isActive
-                      ? "text-brand-violet"
-                      : "text-ink-2 hover:text-brand-violet"
-                    : isActive
-                    ? "text-white"
-                    : "text-slate-300 hover:text-white"
-                }`}
-              >
-                {item.name}
-              </a>
-            );
-          })}
+          {/* Left slot: Hidden on Hero candle pill; visible as blinking purple dot + Ashik Khan when scrolled */}
+          {pastHero ? (
+            <a
+              href="#hero"
+              aria-label="Scroll to top"
+              onClick={() => setMobileMenuOpen(false)}
+              className="nav-logo group focus:outline-none animate-[yin_0.35s_ease_both]"
+            >
+              <span className="logo-dot" aria-hidden="true" />
+              <span className="text-ink">Ashik Khan</span>
+            </a>
+          ) : (
+            <span className="md:hidden text-xs font-mono tracking-widest uppercase text-slate-300">
+              Menu
+            </span>
+          )}
 
-          <a
-            ref={contactBtnRef}
-            href="#contact"
-            className={`nav-cta group inline-flex items-center gap-1.5 ${
-              pastHero
-                ? "bg-ink text-white hover:bg-brand-violet hover:shadow-[0_8px_24px_rgba(91,62,255,0.3)]"
-                : "!py-1.5 !px-4 bg-white text-ink hover:bg-brand-violet hover:text-white hover:shadow-[0_8px_24px_rgba(91,62,255,0.45)]"
+          {/* Desktop Links + Contact CTA */}
+          <div
+            className={`hidden md:flex items-center ${
+              pastHero ? "gap-9" : "gap-7"
             }`}
           >
-            <span>Contact</span>
-            <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </a>
-        </div>
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.substring(1);
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`nav-link inline-flex items-center ${isActive ? "active" : ""} ${
+                    pastHero
+                      ? isActive
+                        ? "text-brand-violet"
+                        : "text-ink-2 hover:text-brand-violet"
+                      : isActive
+                      ? "text-white"
+                      : "text-slate-300 hover:text-white"
+                  }`}
+                >
+                  {item.name}
+                </a>
+              );
+            })}
 
-        {/* Mobile Hamburger */}
-        <div className="flex md:hidden">
-          <button
-            type="button"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-expanded={mobileMenuOpen}
-            aria-label="Toggle Navigation Menu"
-            className={`p-1.5 transition-colors focus:outline-none ${
-              pastHero ? "text-ink-2 hover:text-ink" : "text-slate-200 hover:text-white"
-            }`}
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
-        </div>
-      </nav>
+            <a
+              ref={contactBtnRef}
+              href="#contact"
+              className={`nav-cta group inline-flex items-center gap-1.5 ${
+                pastHero
+                  ? "bg-ink text-white hover:bg-brand-violet hover:shadow-[0_8px_24px_rgba(91,62,255,0.3)]"
+                  : "!py-1.5 !px-4 bg-white text-ink hover:bg-brand-violet hover:text-white hover:shadow-[0_8px_24px_rgba(91,62,255,0.45)]"
+              }`}
+            >
+              <span>Contact</span>
+              <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+          </div>
 
-      {/* Mobile Drawer Menu */}
+          {/* Mobile Hamburger Button */}
+          <div className="flex md:hidden">
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
+              aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              className={`p-1.5 rounded-full transition-colors focus:outline-none ${
+                mobileMenuOpen
+                  ? "text-ink bg-surface"
+                  : pastHero
+                  ? "text-ink-2 hover:text-ink"
+                  : "text-slate-200 hover:text-white"
+              }`}
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      {/* Mobile Full-Screen Drawer rendered outside <header> so transform/backdrop-filter never clips fixed positioning */}
       {mobileMenuOpen && (
         <div
-          className={`fixed inset-x-0 bottom-0 bg-white/98 backdrop-blur-2xl z-50 md:hidden flex flex-col px-8 py-10 justify-between border-t border-border ${
-            pastHero ? "top-16" : "top-20 rounded-t-3xl"
-          }`}
+          id="mobile-nav-drawer"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation"
+          className="fixed inset-0 z-[490] bg-white/95 backdrop-blur-2xl md:hidden flex flex-col justify-between px-7 pt-24 pb-10 animate-[yin_0.28s_cubic-bezier(0.23,1,0.32,1)_both]"
         >
-          <div className="flex flex-col space-y-5">
-            <span className="text-xs font-mono uppercase text-muted tracking-widest">
+          <div className="flex flex-col space-y-2">
+            <span className="text-[11px] font-mono uppercase text-muted tracking-[0.2em] mb-2">
               Navigation
             </span>
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-2xl font-display font-bold text-ink hover:text-brand-violet transition-colors py-2 flex items-center justify-between border-b border-border/60"
-              >
-                <span>{item.name}</span>
-                <span className="text-xs font-mono text-muted">→</span>
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.substring(1);
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleMobileNav(item.href);
+                  }}
+                  className={`text-2xl font-display font-extrabold py-3.5 flex items-center justify-between border-b border-border/70 transition-colors ${
+                    isActive ? "text-brand-violet" : "text-ink hover:text-brand-violet"
+                  }`}
+                >
+                  <span>{item.name}</span>
+                  <span className="text-sm font-mono text-muted">→</span>
+                </a>
+              );
+            })}
           </div>
 
           <div className="pt-6 border-t border-border flex flex-col gap-3">
             <a
               href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="w-full py-3 text-center text-sm font-sans font-bold text-white bg-ink hover:bg-brand-violet rounded-xl transition-colors inline-flex items-center justify-center gap-1.5"
+              onClick={(e) => {
+                e.preventDefault();
+                handleMobileNav("#contact");
+              }}
+              className="w-full py-3.5 text-center text-sm font-sans font-bold text-white bg-ink hover:bg-brand-violet rounded-full transition-colors inline-flex items-center justify-center gap-1.5 shadow-lg shadow-ink/15"
             >
               <span>Contact</span>
               <ArrowUpRight className="w-4 h-4" />
@@ -229,6 +255,6 @@ export default function Navigation() {
           </div>
         </div>
       )}
-    </header>
+    </>
   );
 }

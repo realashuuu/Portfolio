@@ -381,23 +381,23 @@ body {
   box-shadow: 0 12px 28px rgba(6, 182, 212, 0.22);
 }
 
-/* Shared GPU-composited card scroll reveal (placed before card classes so hover rules win cleanly) */
+/* Shared GPU-composited scroll reveal matching smooth cubic-bezier entrance */
 .reveal-card {
   opacity: 0;
-  transform: translate3d(0, 22px, 0) scale(0.985);
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1), transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translate3d(0, 28px, 0);
+  transition: opacity 0.7s cubic-bezier(0.23, 1, 0.32, 1), transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
   transition-delay: var(--reveal-delay, 0ms);
 }
 
 .reveal-card.is-visible {
   opacity: 1;
-  transform: translate3d(0, 0, 0) scale(1);
+  transform: translate3d(0, 0, 0);
 }
 
-/* Shared glowing border treatment on light cards */
+/* Shared glowing border treatment on light cards (border & shadow only so GSAP transforms never conflict) */
 .card-glow {
   border: 1px solid var(--border);
-  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s, border-color 0.4s;
+  transition: box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .card-glow:hover {

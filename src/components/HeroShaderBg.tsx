@@ -86,20 +86,20 @@ void main() {
   float sheen = pow(nh, 7.0);
   float rim = pow(1.0 - n.z, 2.0);
 
-  // Dark blue / deep slate / steel blue + electric violet & cyan specular sheen
-  vec3 baseNavy = vec3(0.031, 0.047, 0.086);   // #080c16
-  vec3 steelBlue = vec3(0.145, 0.235, 0.365);  // #253c5d
+  // Deep dark navy / steel blue with subtle violet & cyan sheen
+  vec3 baseNavy = vec3(0.014, 0.022, 0.045);   // #04060c
+  vec3 steelBlue = vec3(0.115, 0.195, 0.315);  // #1d3250
   vec3 violetAccent = vec3(0.357, 0.243, 1.0); // #5b3eff
   vec3 cyanAccent = vec3(0.055, 0.647, 0.914); // #0ea5e9
 
   vec3 col = baseNavy
-    + diff * 0.24 * steelBlue
-    + sheen * 0.16 * violetAccent
-    + spec * 0.22 * cyanAccent
-    + rim * 0.20 * steelBlue;
+    + diff * 0.18 * steelBlue
+    + sheen * 0.13 * violetAccent
+    + spec * 0.18 * cyanAccent
+    + rim * 0.16 * steelBlue;
 
   vec2 uv = fc / uRes;
-  float vig = 1.0 - 0.65 * smoothstep(0.32, 1.05, length(vec2(uv.x - 0.5, (uv.y - 0.5) * 1.1)));
+  float vig = 1.0 - 0.74 * smoothstep(0.28, 1.02, length(vec2(uv.x - 0.5, (uv.y - 0.5) * 1.1)));
   col *= vig;
 
   gl_FragColor = vec4(pow(clamp(col, 0.0, 1.0), vec3(0.95)), 1.0);
