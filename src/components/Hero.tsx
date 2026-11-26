@@ -223,7 +223,7 @@ export default function Hero() {
 
           {/* Concise bio */}
           <p className="hero-p-dark">
-            <strong className="text-white font-semibold">Ashik Khan</strong> — Computer Science &amp;
+            Computer Science &amp;
             Engineering undergraduate and{" "}
             <strong className="text-white font-semibold">Full-Stack Developer</strong> building scalable
             web applications, backend architectures, real-time systems, and practical{" "}

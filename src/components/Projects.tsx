@@ -13,8 +13,8 @@ const FEATURED_PROJECTS = projects.filter(
 
 // Replace these paths once you drop your screenshots into /public/images/
 const PROJECT_PREVIEW_IMAGES: Record<string, string> = {
-  nexora: "", // e.g., "/images/nexora-preview.png"
-  mivchat: "", // e.g., "/images/mivchat-preview.png"
+  nexora: "/images/Nexora.png", // e.g., "/images/nexora-preview.png"
+  mivchat: "/images/MivChat.png", // e.g., "/images/mivchat-preview.png"
 };
 
 // Authentic resume bullet points for each card
